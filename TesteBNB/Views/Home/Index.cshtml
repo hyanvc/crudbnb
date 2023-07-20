@@ -1,8 +1,95 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿<!DOCTYPE html>
+<html>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<head>
+    <title>Tela de Pesquisa</title>
+</head>
+
+<body>
+    <h1>Pesquisar Nome</h1>
+    <form id="searchForm">
+        <div>
+            <input type="text" id="searchNameInput" placeholder="clique para pesquisar">
+            <button type="button" onclick="pesquisarNome()">Pesquisar</button>
+            <button type="button" id="newUserButton" onclick="inserirNovoUsuario()">Novo Usuário</button>
+
+        </div>
+    </form>
+
+    <table>
+        <tr>
+            <th>Nome</th>
+            <th>CPF/CNPJ</th>
+            <th>Telefone</th>
+            <th>Email</th>
+            <th>Endereço Comercial</th>
+            <th>Endereço Residencial</th>
+            <th>Editar</th>
+            <th>Excluir</th>
+        </tr>
+        <tr>
+            <td>João da Silva</td>
+            <td>123.456.789-00</td>
+            <td>(11) 98765-4321</td>
+            <td>joao.silva@email.com</td>
+            <td>Rua Comercial, 123</td>
+            <td>Rua Residencial, 456</td>
+            <td><button onclick="editarDados(1)">Editar</button></td>
+            <td><button onclick="excluirDados(1)">Excluir</button></td>
+        </tr>
+        <tr>
+            <td>Maria Souza</td>
+            <td>987.654.321-00</td>
+            <td>(21) 99876-5432</td>
+            <td>maria.souza@email.com</td>
+            <td>Avenida Comercial, 789</td>
+            <td>Avenida Residencial, 987</td>
+            <td><button onclick="editarDados(2)">Editar</button></td>
+            <td><button onclick="excluirDados(2)">Excluir</button></td>
+        </tr>
+    </table>
+
+    <div id="editModal" style="display: none;">
+        <h2>Editar Dados</h2>
+        <label for="editNome">Nome:</label>
+        <input type="text" id="editNome">
+        <label for="editCPF">CPF/CNPJ:</label>
+         <input type="text" id="editCPF">
+
+        <button onclick="salvarEdicao()">Salvar</button>
+        <button onclick="fecharModal()">Cancelar</button>
+    </div>
+
+    <script>
+        function pesquisarNome() {
+
+        }
+
+        function editarDados(id) {
+
+            abrirModal();
+        }
+
+        function excluirDados(id) {
+
+        }
+
+        function inserirNovoUsuario() {
+            window.location.href = "/Home/Cadastrar";
+        }
+
+        function abrirModal() {
+            $("#editModal").show();
+        }
+
+        function fecharModal() {
+            $("#editModal").hide();
+        }
+
+        function salvarEdicao() {
+            fecharModal();
+        }
+    </script>
+</body>
+
+</html>

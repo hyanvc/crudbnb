@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inserir novo usuário</title>
+</head>
+<body>
+    <div id="insertForm">
+        <div>
+            <label for="tipo-pessoa">Tipo de pessoa:</label>
+            <select id="tipo-pessoa" name="tipo-pessoa">
+                <option>Selecione</option>
+                <option value="fisica">Física</option>
+                <option value="juridica">Jurídica</option>
+            </select>
+        </div>
+        <div class="form-columns">
+            <div id="pessoa-fisica" style="display: none;">
+                <div class="column">
+                    <label for="nome">Nome:</label>
+                    <input type="text" id="nome" name="nome">
+                </div>
+                <div class="column">
+                    <label for="cpf">CPF:</label>
+                    <input type="text" id="cpf" name="cpf">
+                </div>
+            </div>
+            <div id="pessoa-juridica" style="display: none;">
+                <div class="column">
+                    <label for="razao-social">Razão Social:</label>
+                    <input type="text" id="razao-social" name="razao-social">
+                </div>
+                <div class="column">
+                    <label for="cnpj">CNPJ:</label>
+                    <input type="text" id="cnpj" name="cnpj">
+                </div>
+            </div>
+            <div class="column">
+                <label for="telefone">Telefone:</label>
+                <input type="text" id="telefone" name="telefone">
+            </div>
+            <div class="column">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email">
+            </div>
+        </div>
+
+        <div>
+            <div style="display: flex">
+                <h2>Endereços</h2>
+                <button id="adicionar-endereco">Adicionar Endereço</button>
+            </div>          
+            <table id="enderecos" style="width: 50%;">
+                <thead>
+                    <tr>
+                        <th>Endereço</th>
+                        <th style="width: 50px;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>123 Main St.</td>
+                        <td style="text-align: right;"><button class="remover-endereco">X</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+
+    <script>
+        $(document).ready(function () {
+            $('#tipo-pessoa').on('change', function () {
+                if ($(this).val() === 'fisica') {
+                    $('#pessoa-fisica').show();
+                    $('#pessoa-juridica').hide();
+                } else if ($(this).val() === 'juridica') {
+                    $('#pessoa-fisica').hide();
+                    $('#pessoa-juridica').show();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

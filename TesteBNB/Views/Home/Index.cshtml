@@ -61,6 +61,31 @@
     </div>
 
     <script>
+        $(document).ready(function () {
+            function filterTableRows(searchValue) {
+                const rows = $("table tr:not(:first-child)");
+
+                rows.each(function () {
+                    const nameColumn = $(this).find("td:first-child").text().toLowerCase();
+                    if (nameColumn.includes(searchValue.toLowerCase())) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            }
+
+            $("#searchForm button").click(function () {
+                const searchInput = $("#searchNameInput").val(); 
+                filterTableRows(searchInput);
+            });
+
+            function clearSearch() {
+                $("#searchNameInput").val(""); 
+                $("table tr").show(); 
+            }
+
+        });
         function pesquisarNome() {
 
         }
@@ -90,6 +115,8 @@
             fecharModal();
         }
     </script>
+   
+
 </body>
 
 </html>

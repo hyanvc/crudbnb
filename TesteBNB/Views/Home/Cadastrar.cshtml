@@ -68,10 +68,18 @@
         </div>
     </div>
 
+    <div>
+        <button onclick="voltar()">Voltar</button>
+        <button>Cadastrar</button>
+    </div>
 
 
 
     <script>
+        function voltar() {
+            window.location.href = "/Home/Index";
+
+        }
         $(document).ready(function () {
             $('#tipo-pessoa').on('change', function () {
                 if ($(this).val() === 'fisica') {

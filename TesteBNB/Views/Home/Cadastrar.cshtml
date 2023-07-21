@@ -68,9 +68,19 @@
         </div>
     </div>
 
+    <div id="insertForm">
+    <div id="enderecoModal" style="display: none;">
+        <h2>Adicionar Endereço</h2>
+        <label for="endereco">Endereço:</label>
+        <input type="text" id="endereco">
+        <button id="salvarEndereco">Salvar</button>
+        <button id="fecharModal">Fechar</button>
+    </div>
+
     <div>
         <button onclick="voltar()">Voltar</button>
         <button>Cadastrar</button>
+    </div>
     </div>
 
 
@@ -78,8 +88,8 @@
     <script>
         function voltar() {
             window.location.href = "/Home/Index";
-
         }
+
         $(document).ready(function () {
             $('#tipo-pessoa').on('change', function () {
                 if ($(this).val() === 'fisica') {
@@ -90,7 +100,26 @@
                     $('#pessoa-juridica').show();
                 }
             });
+
+            $("#adicionar-endereco").on("click", function () {
+                $("#enderecoModal").show();
+            });
+
+            $("#salvarEndereco").on("click", function () {
+                var endereco = $("#endereco").val();
+                console.log("Endereço inserido: " + endereco);
+                fecharModal();
+            });
+
+            $("#fecharModal").on("click", function () {
+                fecharModal();
+            });
+
+            function fecharModal() {
+                $("#enderecoModal").hide();
+            }
         });
     </script>
+
 </body>
 </html>

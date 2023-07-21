@@ -1,20 +1,38 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - TesteBNB</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/TesteBNB.styles.css" asp-append-version="true" />
-</head>
+﻿
 <style>
     table {
         border-collapse: collapse;
         width: 100%;
     }
+    #overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1;
+    }
 
+    #confirmModal {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        padding: 20px;
+        z-index: 2;
+    }
+
+        #confirmModal h2 {
+            margin-top: 0;
+        }
+
+        #confirmModal button {
+            margin-top: 10px;
+        }
     th,
     td {
         border: 1px solid #ccc;
@@ -40,13 +58,14 @@
     }
 
     .column {
-        flex: 1 0 50%; 
-        padding: 5px; 
-        box-sizing: border-box; 
+        flex: 1 0 50%;
+        padding: 5px;
+        box-sizing: border-box;
     }
+
     #insertForm div {
         display: block;
-        margin-bottom: 10px; 
+        margin-bottom: 10px;
     }
 
     #insertForm .form-columns {
@@ -56,42 +75,56 @@
 
 
     #insertForm .column {
-        flex-basis: calc(90% - 5px); 
-        margin-right: 5px; 
+        flex-basis: calc(90% - 5px);
+        margin-right: 5px;
     }
-  
+
     #insertForm input[type="text"],
     #insertForm input[type="email"],
     #insertForm select {
-        padding: 8px; 
-        border: 1px solid #ccc; 
-        border-radius: 5px; 
-        outline: none; 
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        outline: none;
     }
 
     #searchForm input[type="text"],
     #searchForm input[type="email"],
     #searchForm select {
-        padding: 8px; 
+        padding: 8px;
         border: 1px solid #ccc;
-        border-radius: 5px; 
-        outline: none; 
+        border-radius: 5px;
+        outline: none;
     }
 
     button {
         padding: 8px 15px;
-        border: none; 
+        border: none;
         border-radius: 20px;
         background-color: cornflowerblue;
         color: white;
         cursor: pointer;
-        transition: background-color 0.3s; 
+        transition: background-color 0.3s;
     }
+
     #newUserButton {
         margin-left: 10px;
         margin-bottom: 20px;
     }
 </style>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - TesteBNB</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/TesteBNB.styles.css" asp-append-version="true" />
+</head>
+
 <body>
     <div class="container">
         <main role="main" class="pb-3">

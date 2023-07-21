@@ -51,7 +51,7 @@
                 <h2>Endereços</h2>
                 <button id="adicionar-endereco">Adicionar Endereço</button>
             </div>
-            @model List<EnderecoModel>
+            @model List<UsuarioModel>
 
             <table id="enderecos" style="width: 50%;">
                 <thead>
@@ -64,7 +64,7 @@
                     @foreach (var enderecoModel in Model)
                     {
                         <tr>
-                            <td>@enderecoModel.Endereco</td>
+                            <td>@enderecoModel.EndComercial</td>
                             <td style="text-align: right;"><button class="remover-endereco">X</button></td>
                         </tr>
                     }

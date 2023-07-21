@@ -19,41 +19,46 @@ namespace TesteBNB.Controllers
 
         public async Task<IActionResult> Index()
         {
+            string parametro = null;
+            var result = await ResultAPI(parametro);
+            return View(result);
+        }
+
+        public async Task<IActionResult> Cadastrar()
+        {
+            var parametro = "EnderecosComerciais";
+            var result = await ResultAPI(parametro);
+            return View(result);
+        }
+
+        public async Task<List<UsuarioModel>?> ResultAPI(string parametro)
+        {
             try
             {
-                HttpResponseMessage response = await _httpClient.GetAsync("UsuarioBNB");
-                response.EnsureSuccessStatusCode();
+                HttpResponseMessage response = null;
+                if (parametro == null)
+                {
+                    response = await _httpClient.GetAsync("UsuarioBNB");
+                    response.EnsureSuccessStatusCode();
+                }
+                else
+                {
+                    response = await _httpClient.GetAsync("UsuarioBNB/" + parametro);
+                    response.EnsureSuccessStatusCode();
+                }
 
                 string content = await response.Content.ReadAsStringAsync();
-                List<UsuarioModel>? usuarios = JsonSerializer.Deserialize<List<UsuarioModel>>(content, new JsonSerializerOptions
+                List<UsuarioModel>? result = JsonSerializer.Deserialize<List<UsuarioModel>>(content, new JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = true
                 });
 
-                return View(usuarios);
+                return result;
             }
             catch (HttpRequestException)
             {
-                return BadRequest();
+                return new List<UsuarioModel>();
             }
         }
-
-
-        public async Task<IActionResult> Cadastrar()
-        {
-
-            HttpResponseMessage response = await _httpClient.GetAsync("UsuarioBNB/EnderecosComerciais");
-            response.EnsureSuccessStatusCode();
-
-            string content = await response.Content.ReadAsStringAsync();
-            List<EnderecoModel>? endereco = JsonSerializer.Deserialize<List<EnderecoModel>>(content, new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            });
-
-            return View(endereco);
-        }
-
-
     }
 }

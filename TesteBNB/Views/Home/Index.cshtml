@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@model List<UsuarioModel>
+
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -27,27 +29,25 @@
             <th>Editar</th>
             <th>Excluir</th>
         </tr>
-        <tr>
-            <td>João da Silva</td>
-            <td>123.456.789-00</td>
-            <td>(11) 98765-4321</td>
-            <td>joao.silva@email.com</td>
-            <td>Rua Comercial, 123</td>
-            <td>Rua Residencial, 456</td>
-            <td><button onclick="editarDados(1, 'João da Silva', '123.456.789-00')">Editar</button></td>
-            <td><button onclick="excluirDados(1, 'João da Silva')">Excluir</button></td>
-        </tr>
-        <tr>
-            <td>Maria Souza</td>
-            <td>987.654.321-00</td>
-            <td>(21) 99876-5432</td>
-            <td>maria.souza@email.com</td>
-            <td>Avenida Comercial, 789</td>
-            <td>Avenida Residencial, 987</td>
-            <td><button onclick="editarDados(2, 'Maria Souza', '987.654.321-00')">Editar</button></td>
-            <td><button onclick="excluirDados(2, 'Maria Souza')">Excluir</button></td>
-        </tr>
+        @foreach (var usuario in Model)
+        {
+            <tr>
+                <td>@usuario.Nome</td>
+                <td>@(usuario.CPF ?? usuario.CNPJ)</td>
+                <td>@usuario.Telefone</td>
+                <td>@usuario.Email</td>
+                <td>@usuario.EndComercial</td>
+                <td>@usuario.EndResidencial</td>
+                <td>
+                    <button onclick="editarDados(@usuario.CNPJ, '@usuario.Nome', '@(usuario.CPF ?? usuario.CNPJ)')">Editar</button>
+                </td>
+                <td>
+                    <button onclick="excluirDados(@usuario.CNPJ, '@usuario.Nome')">Excluir</button>
+                </td>
+            </tr>
+        }
     </table>
+
 
     <div id="editModal" style="display: none;">
         <h2>Editar Dados</h2>

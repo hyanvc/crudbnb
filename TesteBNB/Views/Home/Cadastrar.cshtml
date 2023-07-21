@@ -50,7 +50,9 @@
             <div style="display: flex">
                 <h2>Endereços</h2>
                 <button id="adicionar-endereco">Adicionar Endereço</button>
-            </div>          
+            </div>
+            @model List<EnderecoModel>
+
             <table id="enderecos" style="width: 50%;">
                 <thead>
                     <tr>
@@ -59,12 +61,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>123 Main St.</td>
-                        <td style="text-align: right;"><button class="remover-endereco">X</button></td>
-                    </tr>
+                    @foreach (var enderecoModel in Model)
+                    {
+                        <tr>
+                            <td>@enderecoModel.Endereco</td>
+                            <td style="text-align: right;"><button class="remover-endereco">X</button></td>
+                        </tr>
+                    }
                 </tbody>
             </table>
+
         </div>
     </div>
 

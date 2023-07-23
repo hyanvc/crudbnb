@@ -1,13 +1,13 @@
-﻿using Newtonsoft.Json;
-
-public class UsuarioModel
+﻿public class UsuarioModel
 {
-    //public int Id { get; set; }
+
+    public int Id { get; set; }
+
     public string? Nome { get; set; }
 
-    public int? CPF { get; set; }
+    public long? CPF { get; set; }
 
-    public int? CNPJ { get; set; }
+    public long? CNPJ { get; set; }
 
     public int Telefone { get; set; }
 

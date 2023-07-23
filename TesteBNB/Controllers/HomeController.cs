@@ -1,8 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
-using System.Net.Http;
 using System.Text.Json;
-using TesteBNB.Models;
 
 namespace TesteBNB.Controllers
 {
@@ -59,6 +56,32 @@ namespace TesteBNB.Controllers
             {
                 return new List<UsuarioModel>();
             }
+        }
+
+
+
+        public async Task<bool> DeleteAPI(int id)
+        {
+            try
+            {
+                HttpResponseMessage response = await _httpClient.DeleteAsync($"UsuarioBNB/Usuario/{id}");
+                response.EnsureSuccessStatusCode();
+
+                return true;
+            }
+            catch (HttpRequestException)
+            {
+                return false;
+            }
+        }
+
+
+        [HttpDelete]
+        public ActionResult DeletarUsuario(int id)
+        {
+            var resultado = DeleteAPI(id);
+
+            return Ok();
         }
     }
 }

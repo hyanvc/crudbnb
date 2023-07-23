@@ -39,10 +39,10 @@
                 <td>@usuario.EndComercial</td>
                 <td>@usuario.EndResidencial</td>
                 <td>
-                    <button onclick="editarDados(@usuario.CNPJ, '@usuario.Nome', '@(usuario.CPF ?? usuario.CNPJ)')">Editar</button>
+                    <button onclick="editarDados(@usuario.Id, '@usuario.Nome', '@(usuario.CPF ?? usuario.CNPJ)')">Editar</button>
                 </td>
                 <td>
-                    <button onclick="excluirDados(@usuario.CNPJ, '@usuario.Nome')">Excluir</button>
+                    <button onclick="abrirModalConfirmacao(@usuario.Id, '@usuario.Nome')">Excluir</button>
                 </td>
             </tr>
         }
@@ -64,7 +64,7 @@
     <div id="confirmModal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2;">
         <div style="background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); text-align: center;">
             <h2 style="margin-top: 0;" id="modalMessage">Deseja realmente excluir?</h2>
-            <button style="margin-right: 10px; padding: 8px 20px; background-color: #d9534f; color: white; border: none; border-radius: 4px; cursor: pointer;" onclick="confirmarExclusao()">Sim</button>
+            <button style="margin-right: 10px; padding: 8px 20px; background-color: #d9534f; color: white; border: none; border-radius: 4px; cursor: pointer;" id="botaoconfirmar">Sim</button>
             <button style="padding: 8px 20px; background-color: #337ab7; color: white; border: none; border-radius: 4px; cursor: pointer;" onclick="fecharModalexcluir()">Cancelar</button>
         </div>
     </div>
@@ -91,6 +91,7 @@
                 filterTableRows(searchInput);
             });
 
+
             function clearSearch() {
                 $("#searchNameInput").val(""); 
                 $("table tr").show(); 
@@ -98,21 +99,7 @@
 
         });
 
-        function excluirDados(id, name) {
-            window.currentId = id;
-
-            var modal = document.getElementById('confirmModal');
-            var modalMessage = document.getElementById('modalMessage');
-            modalMessage.innerText = `Deseja realmente excluir ${name}?`;
-            modal.style.display = 'block';
-        }
-
-
-        function confirmarExclusao() {
-          
-
-            fecharModalexcluir();
-        }
+    
 
         function fecharModal() {
             var modals = document.querySelectorAll('[id$=Modal]');
@@ -150,6 +137,44 @@
             window.location.href = "/Home/Cadastrar";
         }
 
+        var userIdToDelete = null;
+        var userNameToDelete = null;
+
+        function abrirModalConfirmacao(id, nome) {
+            userIdToDelete = id;
+            userNameToDelete = nome;
+
+            var modal = document.getElementById('confirmModal');
+            modal.querySelector('#modalMessage').innerText = `Deseja realmente excluir o usuário ${nome}?`;
+            modal.style.display = 'block';
+
+            $("#botaoconfirmar").click(function () {
+                fecharModal();
+
+                excluirUsuario(userIdToDelete);
+            });
+        }
+
+        function fecharModal() {
+            var modal = document.getElementById('confirmModal');
+            modal.style.display = 'none';
+        }
+
+        function excluirUsuario(id) {
+            $.ajax({
+                url: `/Home/DeletarUsuario?id=${id}`,
+                type: 'DELETE',
+                success: function (result) {
+                    console.log("Requisição de exclusão bem-sucedida!", result);
+                    location.reload();
+                },
+                error: function (error) {
+                    console.log("Erro ao excluir usuário:", error);
+                }
+            });
+        }
+
+
 
         function fecharModal() {
             $("#editModal").hide();
@@ -159,8 +184,6 @@
             fecharModal();
         }
     </script>
-   
-
 </body>
 
 </html>

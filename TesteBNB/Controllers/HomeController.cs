@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Text;
 using System.Text.Json;
 
 namespace TesteBNB.Controllers
@@ -9,7 +10,6 @@ namespace TesteBNB.Controllers
 
         public HomeController()
         {
-            // Configurar o HttpClient para chamar a API
             _httpClient = new HttpClient();
             _httpClient.BaseAddress = new Uri("https://localhost:7100/");
         }
@@ -58,6 +58,24 @@ namespace TesteBNB.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Insert(UsuarioModel usuario)
+        {
+            try
+            {
+                var jsonUsuario = JsonSerializer.Serialize(usuario);
+                var content = new StringContent(jsonUsuario, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = await _httpClient.PostAsync("UsuarioBNB/Usuario", content);
+                response.EnsureSuccessStatusCode();
+
+                return RedirectToAction("Index", "Home");
+            }
+            catch (HttpRequestException)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+        }
 
 
         public async Task<bool> DeleteAPI(int id)
@@ -83,5 +101,7 @@ namespace TesteBNB.Controllers
 
             return Ok();
         }
+
+
     }
 }

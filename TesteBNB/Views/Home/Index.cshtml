@@ -39,10 +39,15 @@
                 <td>@usuario.EndComercial</td>
                 <td>@usuario.EndResidencial</td>
                 <td>
-                    <button onclick="editarDados(@usuario.Id, '@usuario.Nome', '@(usuario.CPF ?? usuario.CNPJ)')">Editar</button>
+                    <button onclick="editarDados('@usuario.Id', '@usuario.Nome', '@(usuario.CPF ?? usuario.CNPJ)')">Editar</button>
                 </td>
                 <td>
-                    <button onclick="abrirModalConfirmacao(@usuario.Id, '@usuario.Nome')">Excluir</button>
+                    <button onclick="abrirModalConfirmacao('@usuario.Id', '@usuario.Nome')">Excluir</button>
+                </td>
+            </tr>
+            <tr style="display: none;">
+                <td colspan="7">
+                    <input type="hidden" id="userIdvalor" value="@usuario.Id" />
                 </td>
             </tr>
         }
@@ -51,14 +56,25 @@
 
     <div id="editModal" style="display: none;">
         <h2>Editar Dados</h2>
-        <label for="editNome">Nome:</label>
-        <input type="text" id="editNome">
-        <label for="editCPF">CPF/CNPJ:</label>
-         <input type="text" id="editCPF">
+        <form id="updateForm" action="/Home/Update" method="post">
+            <label for="editNome">Nome:</label>
+            <input type="text" id="editNome" name="Nome">
+            <label for="editCPF">CPF/CNPJ:</label>
+            <input type="text" id="editCPF" name="CPF">
+            <label for="editTelefone">Telefone:</label>
+            <input type="text" id="editTelefone" name="Telefone">
+            <label for="editEmail">Email:</label>
+            <input type="text" id="editEmail" name="Email">
+            <label for="editEndComercial">Endereço Comercial:</label>
+            <input type="text" id="editEndComercial" name="EndComercial">
+            <label for="editEndResidencial">Endereço Residencial:</label>
+            <input type="text" id="editEndResidencial" name="EndResidencial">
 
-        <button onclick="salvarEdicao()">Salvar</button>
-        <button onclick="fecharModal()">Cancelar</button>
+=            <button type="button" onclick="salvarEdicao()">Salvar</button>
+            <button type="button" onclick="fecharModal()">Cancelar</button>
+        </form>
     </div>
+
     <div id="overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 1;"></div>
 
     <div id="confirmModal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2;">
@@ -181,8 +197,43 @@
         }
 
         function salvarEdicao() {
-            fecharModal();
+            const form = document.getElementById('updateForm');
+            const updatedId = document.getElementById('userIdvalor').value;
+            const updatedNome = document.getElementById('editNome').value;
+            const updatedCPF = document.getElementById('editCPF').value;
+            const updatedTelefone = document.getElementById('editTelefone').value;
+            const updatedEmail = document.getElementById('editEmail').value;
+            const updatedEndComercial = document.getElementById('editEndComercial').value;
+            const updatedEndResidencial = document.getElementById('editEndResidencial').value;
+
+            const methodField = document.querySelector('input[name="_method"]');
+            if (methodField) {
+                methodField.remove();
+            }
+
+            const methodInput = document.createElement('input');
+            methodInput.setAttribute('type', 'hidden');
+            methodInput.setAttribute('name', '_method');
+            methodInput.setAttribute('value', 'PUT');
+
+            const idInput = document.createElement('input');
+            idInput.setAttribute('type', 'hidden');
+            idInput.setAttribute('name', 'Id');
+            idInput.setAttribute('value', updatedId);
+
+            form.appendChild(methodInput);
+            form.appendChild(idInput);
+
+            document.getElementById('editNome').value = updatedNome;
+            document.getElementById('editCPF').value = updatedCPF;
+            document.getElementById('editTelefone').value = updatedTelefone;
+            document.getElementById('editEmail').value = updatedEmail;
+            document.getElementById('editEndComercial').value = updatedEndComercial;
+            document.getElementById('editEndResidencial').value = updatedEndResidencial;
+
+            form.submit();
         }
+
     </script>
 </body>
 

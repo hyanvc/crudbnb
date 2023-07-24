@@ -77,6 +77,26 @@ namespace TesteBNB.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Update(UsuarioModel usuario)
+        {
+            try
+            {
+                var jsonUsuario = JsonSerializer.Serialize(usuario);
+                var content = new StringContent(jsonUsuario, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = await _httpClient.PutAsync("UsuarioBNB/Usuario", content);
+                response.EnsureSuccessStatusCode();
+
+                return RedirectToAction("Index", "Home");
+            }
+            catch (HttpRequestException)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
+
 
         public async Task<bool> DeleteAPI(int id)
         {

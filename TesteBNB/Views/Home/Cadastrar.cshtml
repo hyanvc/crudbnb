@@ -7,12 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inserir novo usuário</title>
     <style>
-        /* Estilos gerais */
         body {
             font-family: Arial, sans-serif;
         }
 
-        /* Estilos para o formulário */
         #insertForm {
             display: flex;
             flex-direction: column;
@@ -28,7 +26,6 @@
             flex: 1;
         }
 
-        /* Estilos para o modal de endereço */
         #enderecoModal {
             position: fixed;
             top: 50%;
@@ -104,10 +101,6 @@
                     <label for="email">Email:</label>
                     <input type="email" id="email" name="Email">
                 </div>
-                <div class="form-column">
-                    <label for="email">Endereço Residencial::</label>
-                    <input type="text" id="EndComercial" name="EndComercial">
-                </div>
             </div>
 
 
@@ -117,7 +110,6 @@
             <button type="submit">Cadastrar</button>
         </div>
 
-    </form>
     <div>
         <button onclick="voltar()">Voltar</button>
     </div>
@@ -126,7 +118,7 @@
 
 
     <div>
-        <div style="display: flex; align-items: center;">
+       <div style="display: flex; align-items: center;">
             <h2>Endereços</h2>
             <button id="adicionar-endereco">Adicionar Endereço</button>
         </div>
@@ -138,29 +130,50 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var enderecoModel in Model)
-                {
-                    <tr>
-                        <td>@(enderecoModel.EndComercial ?? "N/A")</td>
-                        <td style="text-align: right;"><button class="remover-endereco">X</button></td>
-                    </tr>
-                }
             </tbody>
         </table>
     </div>
-    <div id="enderecoModal">
+    <div id="enderecoModal" style="display: none;">
         <h2>Adicionar Endereço</h2>
-        <label for="endereco">Endereço:</label>
-        <input type="text" id="endereco">
+            <label for="EndResidencial">Endereço:</label>
+            <input type="text" id="EndResidencial" name="EndResidencial">
         <button id="salvarEndereco">Salvar</button>
         <button id="fecharModal">Fechar</button>
     </div>
+    </form>
+
 
  
 
 </body>
 </html>
 
+
+<script>
+    $("#adicionar-endereco").on("click", function () {
+        $("#enderecoModal").show();
+    });
+
+    $("#fecharModal").on("click", function () {
+        $("#enderecoModal").hide();
+    });
+
+    $("#salvarEndereco").on("click", function (event) {
+        event.preventDefault()
+        const endereco = $("#EndResidencial").val();
+        if (endereco.trim() !== "") {
+            const newRow = $("<tr>");
+            newRow.append($("<td>").text(endereco));
+            newRow.append($('<td><button class="remover-endereco">X</button></td>'));
+            $("#enderecos tbody").append(newRow);
+            $("#enderecoModal").hide();
+        }
+    });
+
+    $("form button:not([type='submit'])").on("click", function (event) {
+        event.preventDefault();
+    });
+</script>
 
     <script>
         function voltar() {
@@ -177,24 +190,6 @@
                     $('#pessoa-juridica').show();
                 }
             });
-
-            $("#adicionar-endereco").on("click", function () {
-                $("#enderecoModal").show();
-            });
-
-            $("#salvarEndereco").on("click", function () {
-                var endereco = $("#endereco").val();
-                console.log("Endereço inserido: " + endereco);
-                fecharModal();
-            });
-
-            $("#fecharModal").on("click", function () {
-                fecharModal();
-            });
-
-            function fecharModal() {
-                $("#enderecoModal").hide();
-            }
         });
     </script>
 

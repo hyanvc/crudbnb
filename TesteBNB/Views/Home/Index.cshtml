@@ -1,5 +1,6 @@
 ﻿@model List<UsuarioModel>
 
+
 <!DOCTYPE html>
 <html>
 
@@ -7,7 +8,57 @@
     <title>Tela de Pesquisa</title>
 </head>
 
+<style>
+    #editModal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999; 
+    }
+
+   
+    #updateForm {
+        background-color: #fff; 
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+        #updateForm input {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px; 
+            border: 1px solid #ccc;
+        }
+
+        #updateForm button {
+            padding: 10px 20px;
+            margin-right: 10px;
+            border-radius: 5px;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+        }
+
+            #updateForm button:nth-child(1) {
+                background-color: #007BFF; 
+            }
+
+            #updateForm button:nth-child(2) {
+                background-color: #6C757D; 
+            }
+</style>
+
 <body>
+
+
     <h1>Pesquisar Nome</h1>
     <form id="searchForm">
         <div>
@@ -18,45 +69,55 @@
         </div>
     </form>
 
-    <table>
-        <tr>
-            <th>Nome</th>
-            <th>CPF/CNPJ</th>
-            <th>Telefone</th>
-            <th>Email</th>
-            <th>Endereço Comercial</th>
-            <th>Endereço Residencial</th>
-            <th>Editar</th>
-            <th>Excluir</th>
-        </tr>
-        @foreach (var usuario in Model)
+    @{
+        if (Model.Count() == 0)
         {
-            <tr>
-                <td>@usuario.Nome</td>
-                <td>@(usuario.CPF ?? usuario.CNPJ)</td>
-                <td>@usuario.Telefone</td>
-                <td>@usuario.Email</td>
-                <td>@usuario.EndComercial</td>
-                <td>@usuario.EndResidencial</td>
-                <td>
-                    <button onclick="editarDados('@usuario.Id', '@usuario.Nome', '@(usuario.CPF ?? usuario.CNPJ)')">Editar</button>
-                </td>
-                <td>
-                    <button onclick="abrirModalConfirmacao('@usuario.Id', '@usuario.Nome')">Excluir</button>
-                </td>
-            </tr>
-            <tr style="display: none;">
-                <td colspan="7">
-                    <input type="hidden" id="userIdvalor" value="@usuario.Id" />
-                </td>
-            </tr>
+            <p>Não há dados.</p>
         }
-    </table>
+        else
+        {
+            <table>
+                <tr>
+                    <th>Nome</th>
+                    <th>CPF/CNPJ</th>
+                    <th>Telefone</th>
+                    <th>Email</th>
+                    <th>Endereço Comercial</th>
+                    <th>Endereço Residencial</th>
+                    <th>Editar</th>
+                    <th>Excluir</th>
+                </tr>
+                @foreach (var usuario in Model)
+                {
+                    <tr>
+                        <td>@usuario.Nome</td>
+                        <td>@(usuario.CPF ?? usuario.CNPJ)</td>
+                        <td>@usuario.Telefone</td>
+                        <td>@usuario.Email</td>
+                        <td>@usuario.EndComercial</td>
+                        <td>@usuario.EndResidencial</td>
+                        <td>
+                            <button onclick="editarDados('@usuario.Id', '@usuario.Nome', '@(usuario.CPF ?? usuario.CNPJ)')">Editar</button>
+                        </td>
+                        <td>
+                            <button onclick="abrirModalConfirmacao('@usuario.Id', '@usuario.Nome')">Excluir</button>
+                        </td>
+                    </tr>
+                    <tr style="display: none;">
+                        <td colspan="7">
+                            <input type="hidden" id="userIdvalor" value="@usuario.Id" />
+                        </td>
+                    </tr>
+                }
+            </table>
+        }
+    }
+
 
 
     <div id="editModal" style="display: none;">
-        <h2>Editar Dados</h2>
         <form id="updateForm" action="/Home/Update" method="post">
+            <h2>Editar Dados</h2>
             <label for="editNome">Nome:</label>
             <input type="text" id="editNome" name="Nome">
             <label for="editCPF">CPF/CNPJ:</label>
@@ -70,7 +131,7 @@
             <label for="editEndResidencial">Endereço Residencial:</label>
             <input type="text" id="editEndResidencial" name="EndResidencial">
 
-=            <button type="button" onclick="salvarEdicao()">Salvar</button>
+            <button type="button" onclick="salvarEdicao()">Salvar</button>
             <button type="button" onclick="fecharModal()">Cancelar</button>
         </form>
     </div>

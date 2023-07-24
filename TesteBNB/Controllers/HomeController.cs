@@ -23,9 +23,7 @@ namespace TesteBNB.Controllers
 
         public async Task<IActionResult> Cadastrar()
         {
-            var parametro = "EnderecosComerciais";
-            var result = await ResultAPI(parametro);
-            return View(result);
+            return View();
         }
 
         public async Task<List<UsuarioModel>?> ResultAPI(string parametro)

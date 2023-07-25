@@ -107,21 +107,17 @@
       
         </div>
         <div>
+            <button onclick="voltar()" style="margin-right: 10px;">Voltar</button>
             <button type="submit">Cadastrar</button>
         </div>
 
-    <div>
-        <button onclick="voltar()">Voltar</button>
-    </div>
-
-
 
 
     <div>
-       <div style="display: flex; align-items: center;">
-            <h2>Endereços</h2>
-            <button id="adicionar-endereco">Adicionar Endereço</button>
-        </div>
+            <div style="display: flex; align-items: center;">
+                <h2 style="margin-right: 10px;">Endereços</h2>
+                <button id="adicionar-endereco">Adicionar Endereço</button>
+            </div>
         <table id="enderecos" style="width: 50%;">
             <thead>
                 <tr>
@@ -159,7 +155,7 @@
     });
 
     $("#salvarEndereco").on("click", function (event) {
-        event.preventDefault()
+        event.preventDefault();
         const endereco = $("#EndResidencial").val();
         if (endereco.trim() !== "") {
             const newRow = $("<tr>");
@@ -168,6 +164,11 @@
             $("#enderecos tbody").append(newRow);
             $("#enderecoModal").hide();
         }
+    });
+
+    $(document).on("click", ".remover-endereco", function (event) {
+        event.preventDefault();
+        $(this).closest("tr").remove();
     });
 
     $("form button:not([type='submit'])").on("click", function (event) {

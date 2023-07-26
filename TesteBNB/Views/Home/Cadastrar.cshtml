@@ -153,6 +153,7 @@
 
 <script>
 
+
     function isValidCPF(cpf) {
         cpf = cpf.replace(/[^\d]+/g, '');
 
@@ -234,10 +235,11 @@
             }
         }
 
-=    });
+   });
     $("#adicionar-endereco").on("click", function () {
         $("#enderecoModal").show();
     });
+
 
     $("#fecharModal").on("click", function () {
         $("#enderecoModal").hide();

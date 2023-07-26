@@ -81,21 +81,21 @@
             <div class="form-columns">
                 <div id="pessoa-fisica" style="display: none;" class="form-column">
                     <label for="nome">Nome:</label>
-                    <input type="text" id="nome" name="Nome">
+                    <input type="text" id="nome" name="Nome" required>
                     <label for="cpf">CPF:</label>
-                    <input type="number" id="cpf" name="CPF">
+                    <input type="number" id="cpf" name="CPF" required>
                 </div>
                 <div id="pessoa-juridica" style="display: none;" class="form-column">
                     <label for="razao-social">Razão Social:</label>
-                    <input type="text" id="razao-social" name="RazaoSocial">
+                    <input type="text" id="razao-social" name="RazaoSocial" required>
                     <label for="cnpj">CNPJ:</label>
-                    <input type="number" id="cnpj" name="CNPJ">
+                    <input type="number" id="cnpj" name="CNPJ" required>
                 </div>
             </div>
             <div class="form-columns">
                 <div class="form-column">
                     <label for="telefone">Telefone:</label>
-                    <input type="text" id="telefone" name="Telefone">
+                    <input type="text" id="telefone" name="Telefone" required>
                 </div>
                 <div class="form-column">
                     <label for="email">Email:</label>
@@ -129,13 +129,19 @@
             </tbody>
         </table>
     </div>
-    <div id="enderecoModal" style="display: none;">
-        <h2>Adicionar Endereço</h2>
-            <label for="EndResidencial">Endereço:</label>
-            <input type="text" id="EndResidencial" name="EndResidencial">
-        <button id="salvarEndereco">Salvar</button>
-        <button id="fecharModal">Fechar</button>
-    </div>
+        <div id="enderecoModal" style="display: none;">
+            <h2>Adicionar Endereço</h2>
+            <label for="tipo-endereco">Tipo de Endereço:</label>
+            <select id="tipo-endereco">
+                <option value="residencial">Residencial</option>
+                <option value="comercial">Comercial</option>
+            </select>
+            <label for="endereco">Endereço:</label>
+            <input type="text" id="endereco" name="Endereco">
+            <button id="salvarEndereco">Salvar</button>
+            <button id="fecharModal">Fechar</button>
+        </div>
+
     </form>
 
 
@@ -146,6 +152,89 @@
 
 
 <script>
+
+    function isValidCPF(cpf) {
+        cpf = cpf.replace(/[^\d]+/g, '');
+
+        if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) {
+            return false;
+        }
+
+        let sum = 0;
+        for (let i = 0; i < 9; i++) {
+            sum += parseInt(cpf.charAt(i)) * (10 - i);
+        }
+
+        let remainder = 11 - (sum % 11);
+        if (remainder === 10 || remainder === 11) {
+            remainder = 0;
+        }
+
+        if (remainder !== parseInt(cpf.charAt(9))) {
+            return false;
+        }
+
+        sum = 0;
+        for (let i = 0; i < 10; i++) {
+            sum += parseInt(cpf.charAt(i)) * (11 - i);
+        }
+
+        remainder = 11 - (sum % 11);
+        if (remainder === 10 || remainder === 11) {
+            remainder = 0;
+        }
+
+        return remainder === parseInt(cpf.charAt(10));
+    }
+
+    function isValidCNPJ(cnpj) {
+        cnpj = cnpj.replace(/[^\d]+/g, '');
+
+        if (cnpj.length !== 14 || /^(\d)\1{13}$/.test(cnpj)) {
+            return false;
+        }
+
+        let sum = 0;
+        let factor = 5;
+        for (let i = 0; i < 12; i++) {
+            sum += parseInt(cnpj.charAt(i)) * factor;
+            factor = factor === 2 ? 9 : factor - 1;
+        }
+
+        let remainder = sum % 11 < 2 ? 0 : 11 - (sum % 11);
+        if (remainder !== parseInt(cnpj.charAt(12))) {
+            return false;
+        }
+
+        sum = 0;
+        factor = 6;
+        for (let i = 0; i < 13; i++) {
+            sum += parseInt(cnpj.charAt(i)) * factor;
+            factor = factor === 2 ? 9 : factor - 1;
+        }
+
+        remainder = sum % 11 < 2 ? 0 : 11 - (sum % 11);
+        return remainder === parseInt(cnpj.charAt(13));
+    }
+    $("#insertForm").on("submit", function (event) {
+        const selectedTipoPessoa = $("#tipo-pessoa").val();
+        if (selectedTipoPessoa === "fisica") {
+            const cpfValue = $("#cpf").val();
+            if (!isValidCPF(cpfValue)) {
+                event.preventDefault();
+                alert("CPF inválido!");
+                return;
+            }
+        } else if (selectedTipoPessoa === "juridica") {
+            const cnpjValue = $("#cnpj").val();
+            if (!isValidCNPJ(cnpjValue)) {
+                event.preventDefault();
+                alert("CNPJ inválido!");
+                return;
+            }
+        }
+
+=    });
     $("#adicionar-endereco").on("click", function () {
         $("#enderecoModal").show();
     });
@@ -156,13 +245,24 @@
 
     $("#salvarEndereco").on("click", function (event) {
         event.preventDefault();
-        const endereco = $("#EndResidencial").val();
+        const selectedTipoEndereco = $("#tipo-endereco").val();
+        const endereco = $("#endereco").val();
+
         if (endereco.trim() !== "") {
             const newRow = $("<tr>");
-            newRow.append($("<td>").text(endereco));
+            newRow.append($("<td>").text(selectedTipoEndereco === "comercial" ? "Comercial: " + endereco : "Residencial: " + endereco));
             newRow.append($('<td><button class="remover-endereco">X</button></td>'));
             $("#enderecos tbody").append(newRow);
+
+            const hiddenInput = $("<input>").attr("type", "hidden").attr("name", "TipoEndereco").val(selectedTipoEndereco);
+            newRow.append(hiddenInput);
+
+            const enderecoInput = $("<input>").attr("type", "text").attr("id", "endereco").attr("name", selectedTipoEndereco === "comercial" ? "EndComercial" : "EndResidencial").val(endereco).attr("hidden", true);
+            newRow.append(enderecoInput);
+
             $("#enderecoModal").hide();
+        } else {
+            alert("O endereço não pode estar vazio.");
         }
     });
 
@@ -176,21 +276,27 @@
     });
 </script>
 
-    <script>
-        function voltar() {
-            window.location.href = "/Home/Index";
-        }
+<script>
+    function voltar() {
+        window.location.href = "/Home/Index";
+    }
 
-        $(document).ready(function () {
-            $('#tipo-pessoa').on('change', function () {
-                if ($(this).val() === 'fisica') {
-                    $('#pessoa-fisica').show();
-                    $('#pessoa-juridica').hide();
-                } else if ($(this).val() === 'juridica') {
-                    $('#pessoa-fisica').hide();
-                    $('#pessoa-juridica').show();
-                }
-            });
+    $(document).ready(function () {
+        $('#tipo-pessoa').on('change', function () {
+            if ($(this).val() === 'fisica') {
+                $('#pessoa-fisica').show();
+                $('#pessoa-juridica').hide();
+
+                $('#razao-social').removeAttr('required');
+                $('#cnpj').removeAttr('required');
+            } else if ($(this).val() === 'juridica') {
+                $('#pessoa-fisica').hide();
+                $('#pessoa-juridica').show();
+
+                $('#nome').removeAttr('required');
+                $('#cpf').removeAttr('required');
+            }
         });
-    </script>
+    });
+</script>
 

@@ -119,17 +119,17 @@
         <form id="updateForm" action="/Home/Update" method="post">
             <h2>Editar Dados</h2>
             <label for="editNome">Nome:</label>
-            <input type="text" id="editNome" name="Nome">
+            <input type="text" id="editNome" name="Nome" required>
             <label for="editCPF">CPF/CNPJ:</label>
-            <input type="text" id="editCPF" name="CPF">
+            <input type="text" id="editCPF" name="CPF" required>
             <label for="editTelefone">Telefone:</label>
-            <input type="text" id="editTelefone" name="Telefone">
+            <input type="text" id="editTelefone" name="Telefone" required>
             <label for="editEmail">Email:</label>
             <input type="text" id="editEmail" name="Email">
             <label for="editEndComercial">Endereço Comercial:</label>
             <input type="text" id="editEndComercial" name="EndComercial">
             <label for="editEndResidencial">Endereço Residencial:</label>
-            <input type="text" id="editEndResidencial" name="EndResidencial">
+            <input type="text" id="editEndResidencial" name="EndResidencial" required>
 
             <button type="button" onclick="salvarEdicao()">Salvar</button>
             <button type="button" onclick="fecharModal()">Cancelar</button>

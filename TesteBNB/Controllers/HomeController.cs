@@ -61,6 +61,10 @@ namespace TesteBNB.Controllers
         {
             try
             {
+                if (usuario.RazaoSocial != null)
+                {
+                    usuario.Nome = usuario.RazaoSocial;
+                }
                 var jsonUsuario = JsonSerializer.Serialize(usuario);
                 var content = new StringContent(jsonUsuario, Encoding.UTF8, "application/json");
 
@@ -117,7 +121,7 @@ namespace TesteBNB.Controllers
         {
             var resultado = DeleteAPI(id);
 
-            return Ok();
+            return RedirectToAction("Index", "Home");
         }
 
 
